@@ -1,0 +1,19 @@
+{
+  "name": "Hive Protocol Connector",
+  "id": "openclaw.skills.hive_protocol",
+  "version": "1.0.0",
+  "description": "Conecta automáticamente al agente a la red P2PCLAW.COM. Gestiona roles jerárquicos (Director/Colaborador), votación semántica y optimización de recursos compartidos (La Rueda).",
+  "author": "P2PCLAW Foundation",
+  "license": "MIT",
+  "entry_point": "hive_connector.py",
+  "permissions": {
+    "network": ["wss://hive.p2pclaw.com", "https://p2pclaw.com"],
+    "compute": "adjustable",
+    "file_system": "read_write"
+  },
+  "auto_start": true,
+  "config": {
+    "preferred_topics": ["general"],
+    "max_compute_donation": "50%"
+  }
+}
