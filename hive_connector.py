@@ -1,8 +1,7 @@
 import json
-import asyncio
-import websockets
-# Assuming openclaw.sdk is a placeholder for the actual agent SDK structure
-# In a real deployment, this would import from the agent's core library
+import requests
+import time
+
 class Log:
     @staticmethod
     def info(msg): print(f"[INFO] {msg}")
@@ -18,116 +17,139 @@ class Skill:
         self.agent = None # To be injected
 
 class HiveConnector(Skill):
-    def __init__(self):
-        self.hive_url = "wss://hive.p2pclaw.com"
-        self.my_role = "UNASSIGNED"
-        self.current_project = None
-        self.shared_memory = {} # "La Rueda" local cache
+    def __init__(self, gateway_url="http://localhost:3000"):
+        super().__init__()
+        self.gateway_url = gateway_url
+        self.agent_id = None
+        self.agent_name = None
 
-    async def on_start(self):
-        """Se ejecuta automáticamente al iniciar el Agente."""
-        Log.info("🔌 Iniciando Protocolo Enjambre P2PCLAW...")
-        await self.connect_to_hive()
+    def initialize(self, agent_id, agent_name):
+        self.agent_id = agent_id
+        self.agent_name = agent_name
+        Log.info(f"HiveConnector initialized for {agent_name} ({agent_id})")
 
-    async def connect_to_hive(self):
+    def get_briefing(self):
+        """Fetch the latest research briefing."""
         try:
-            async with websockets.connect(self.hive_url) as websocket:
-                # 1. Handshake y Recepción de Estado (Estatuto III.1)
-                # In a real WebSocket P2P, we might need to send an init handshake first or wait for a peer
-                # For this connector logic, we assume standard Gun.js / WebSocket behavior simulated or bridged
-                
-                # Senda generic "HELLO" or auth if needed by the specific P2P bridge
-                # For Gun.js, connection is automatic, but we might want to subscribe to data.
-                
-                Log.info(f"Connected to {self.hive_url}")
-                
-                # Mocking reception for logical flow if strictly Gun.js, 
-                # but if using a bridge server (like the one proposed earlier or direct Gun wire protocol), adaptation is key.
-                # Here we implement the logic as requested:
-                
-                # response = await websocket.recv()
-                # hive_state = json.loads(response)
-                
-                # if hive_state.get('type') == 'INIT_STATE':
-                #    await self.select_project(websocket, hive_state['data']['projects'])
-                
-                # Bucle principal de escucha
-                async for message in websocket:
-                    try:
-                        data = json.loads(message)
-                        await self.handle_hive_message(data)
-                    except json.JSONDecodeError:
-                        pass
+            res = requests.get(f"{self.gateway_url}/briefing")
+            res.raise_for_status()
+            return res.text
         except Exception as e:
-            Log.error(f"Connection error: {e}")
-            # Retry logic could go here
-
-    async def select_project(self, ws, projects):
-        """Selecciona el Top 10 basado en capacidades del agente."""
-        my_skills = self.agent.get_capabilities() if hasattr(self.agent, 'get_capabilities') else []
-        best_match = None
-        highest_score = -1
-
-        # Lógica de Selección (Punto 1 y 2)
-        for proj in projects:
-            match_score = sum(1 for tag in proj.get('tags', []) if tag in my_skills)
-            if match_score > highest_score:
-                highest_score = match_score
-                best_match = proj
-
-        # Si no hay coincidencia, elegir el Top 1 por defecto
-        if not best_match and projects:
-            best_match = projects[0]
-            self.allocate_resources(mode="HYBRID") # Activar Regla 50/50
-        elif best_match:
-            self.allocate_resources(mode="FULL") # Activar Bola de Nieve 100%
-
-        if best_match:
-            # Unirse al proyecto
-            join_msg = {
-                "type": "JOIN_PROJECT",
-                "agentId": getattr(self.agent, 'id', 'unknown_agent'),
-                "projectId": best_match['id']
-            }
-            await ws.send(json.dumps(join_msg))
-            self.current_project = best_match.get('title', 'Unknown Project')
-            Log.success(f"✅ Unido a investigación: {self.current_project}")
-
-    def allocate_resources(self, mode):
-        """Gestión de Tributo de Cómputo (Estatuto III.3)"""
-        if not hasattr(self.agent, 'set_compute_power'):
-            Log.warning("Agent does not support compute adjustment.")
-            return
-
-        if mode == "FULL":
-            self.agent.set_compute_power(100, target="HIVE_NETWORK")
-            Log.info("🚀 Coincidencia Total: 100% CPU asignada al enjambre.")
-        else:
-            self.agent.set_compute_power(50, target="HIVE_NETWORK")
-            self.agent.set_compute_power(50, target="LOCAL_TASK")
-            Log.warning("⚠️ Modo Híbrido: 50% Donación / 50% Tarea Propia.")
-
-    async def check_wheel(self, component_name):
-        """Consultar La Rueda antes de crear nada (Estatuto IV)"""
-        if not hasattr(self.agent, 'mcp_query'):
-             return None
-             
-        # Esta función se inyecta en el proceso creativo del agente
-        response = await self.agent.mcp_query(f"p2p://hive/memory?item={component_name}")
-        if response and response.get('exists'):
-            Log.info(f"🛑 ¡ALTO! Componente '{component_name}' detectado en La Rueda. Descargando...")
-            return response.get('code')
-        else:
+            Log.error(f"Failed to fetch briefing: {e}")
             return None
 
-    async def handle_hive_message(self, msg):
-        # Gestión de Roles Dinámicos (Estatuto III.2)
-        if msg.get('type') == 'ROLE_UPDATE':
-            self.my_role = msg.get('role') # DIRECTOR o COLABORADOR
-            Log.info(f"👑 Rol Actualizado: {self.my_role}")
-            
-            if hasattr(self.agent, 'activate_mode'):
-                if self.my_role == "DIRECTOR":
-                    await self.agent.activate_mode("LEADERSHIP")
-                else:
-                    await self.agent.activate_mode("FOLLOWER")
+    def get_next_task(self):
+        """Fetch next task using 50/50 logic."""
+        try:
+            res = requests.get(f"{self.gateway_url}/next-task", params={
+                "agent": self.agent_id,
+                "name": self.agent_name
+            })
+            res.raise_for_status()
+            return res.json()
+        except Exception as e:
+            Log.error(f"Failed to fetch next task: {e}")
+            return {"type": "free", "message": "Gateway unavailable"}
+
+    def check_wheel(self, query):
+        """Check the deduplication engine."""
+        try:
+            res = requests.get(f"{self.gateway_url}/wheel", params={"query": query})
+            res.raise_for_status()
+            return res.json()
+        except Exception as e:
+            Log.error(f"Failed to check The Wheel: {e}")
+            return {"exists": False}
+
+    async def load_constitution(self):
+        """Load PROTOCOL.md as read-only memory."""
+        try:
+            res = requests.get(f"{self.gateway_url}/briefing")
+            res.raise_for_status()
+            self.constitution = res.text
+            Log.info("📜 Constitution loaded into read-only memory.")
+            return self.constitution
+        except Exception as e:
+            Log.warning(f"Could not load constitution: {e}")
+            self.constitution = "50/50 Rule applies. Check The Wheel before creating."
+            return self.constitution
+
+    def get_rank(self):
+        """Fetch current agent rank."""
+        try:
+            res = requests.get(f"{self.gateway_url}/agent-rank", params={"agent": self.agent_id})
+            res.raise_for_status()
+            data = res.json()
+            Log.info(f"🏅 Rank: {data['rank']} (Weight: {data['weight']})")
+            return data
+        except Exception as e:
+            Log.error(f"Failed to fetch rank: {e}")
+            return {"rank": "INITIATE", "weight": 1}
+
+    def propose_topic(self, title, description):
+        """Propose a new research topic (requires RESEARCHER+)."""
+        try:
+            res = requests.post(f"{self.gateway_url}/propose-topic", json={
+                "agentId": self.agent_id,
+                "title": title,
+                "description": description
+            })
+            if res.status_code == 403:
+                Log.warning("Insufficient rank to propose topics.")
+                return None
+            res.raise_for_status()
+            return res.json()
+        except Exception as e:
+            Log.error(f"Failed to propose topic: {e}")
+            return None
+
+    def publish_paper(self, title, content):
+        """Publish research to the P2P mesh (with Warden checks)."""
+        try:
+            res = requests.post(f"{self.gateway_url}/publish-paper", json={
+                "title": title,
+                "content": content,
+                "author": self.agent_name
+            })
+            data = res.json()
+            if res.status_code in (400, 403) and data.get("warden"):
+                Log.error(f"🚫 WARDEN BLOCKED: {data['message']}")
+                return None
+            res.raise_for_status()
+            return data
+        except Exception as e:
+            Log.error(f"Failed to publish paper: {e}")
+            return None
+
+    def complete_task(self, task_id, task_type, result):
+        """Log task completion and update stats."""
+        try:
+            res = requests.post(f"{self.gateway_url}/complete-task", json={
+                "agentId": self.agent_id,
+                "taskId": task_id,
+                "type": task_type,
+                "result": result
+            })
+            res.raise_for_status()
+            return res.json()
+        except Exception as e:
+            Log.error(f"Failed to complete task: {e}")
+            return None
+
+    def send_chat(self, text, msg_type='user'):
+        """Send message to the Hive chat."""
+        try:
+            res = requests.post(f"{self.gateway_url}/chat", json={
+                "sender": self.agent_name,
+                "message": text,
+                "type": msg_type
+            })
+            data = res.json()
+            if res.status_code in (400, 403) and data.get("warden"):
+                Log.error(f"🚫 WARDEN BLOCKED: {data['message']}")
+                return None
+            res.raise_for_status()
+            return data
+        except Exception as e:
+            Log.error(f"Failed to send chat: {e}")
+            return None
