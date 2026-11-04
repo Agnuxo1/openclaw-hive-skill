@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "project": "OpenCLAW Community Skill — P2PCLAW Hive Connector",
+  "author": "Francisco Angulo de Lafuente",
+  "orcid": "https://orcid.org/0009-0001-1634-7063",
+  "recorded_on": "2026-11-04",
+  "copyright_year": 2026,
+  "canonical_url": "https://github.com/Agnuxo1/openclaw-hive-skill",
+  "baseline_commit": "90768a4b962ed8873c144ae84cfdac43a9e91cc7",
+  "visibility_at_review": "public",
+  "default_branch_at_review": "master",
+  "authorship_scope": {
+    "basis": "The owner explicitly requested attribution. GitHub links both file-add commits to account Agnuxo1; Git author display name is Francisco Angulo de Lafuente.",
+    "limit": "Git history supports contribution attribution but is not independent proof of legal title. The hive_connector.py notice is limited to P2PCLAW connector/integration code; the external Tier 1 Verifier is not attributed here. manifest.json and SKILL.md were preserved unchanged."
+  },
+  "attribution_summary": {
+    "original_paths_reviewed": 5,
+    "file_headers_added": 2,
+    "readme_visible_attribution_added": 1,
+    "attributed_paths": 3,
+    "preserved_unresolved": 1,
+    "preserved_other_contributor": 1
+  },
+  "license_scope": {
+    "status": "unresolved",
+    "license_file_in_this_repository": false,
+    "license_or_copying_file_in_history": false,
+    "github_spdx_metadata": null,
+    "readme_badge_claim": "MIT",
+    "readme_badge_target": "LICENSE (missing in this repository)",
+    "readme_license_section": "MIT",
+    "skill_license_section": "MIT — See LICENSE",
+    "manifest_license_field": "MIT",
+    "manifest_author_field": "P2PCLAW Foundation",
+    "existing_declarations_verified_as_legal_grants": false,
+    "new_license_added": false,
+    "spdx_headers_added": false,
+    "scope_note": "Existing MIT statements are preserved but no scope or legal grant is inferred. The README now states this limitation; SKILL.md and manifest.json remain unchanged."
+  },
+  "citation_scope": {
+    "citation_cff_added": false,
+    "reason": "No standalone research paper citation target is identified for this skill; existing materials remain unchanged."
+  },
+  "third_party_components": [
+    {
+      "component": "Apoth3osis Tier 1 Verifier (referenced in source as Richard/Abraxas1010)",
+      "disposition": "Underlying verifier and container image are external and not attributed by this update; existing in-file credit is preserved."
+    }
+  ],
+  "security_review": {
+    "reachable_commits_scanned": 5,
+    "unique_blobs_scanned": 9,
+    "credential_pattern_candidates": 0,
+    "email_pattern_matches": 0,
+    "phone_pattern_matches": 0,
+    "matched_values_recorded": false,
+    "credential_active_status_checked": false
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "status": "attributed",
+      "reason": "Visible scoped attribution and license status note added."
+    },
+    {
+      "path": "SKILL.md",
+      "status": "preserved_unresolved",
+      "reason": "Active OpenCLAW skill prompt and YAML frontmatter preserved unchanged."
+    },
+    {
+      "path": "hive_connector.py",
+      "status": "attributed",
+      "reason": "Connector/integration attribution added; external verifier remains separately credited and excluded from the claim."
+    },
+    {
+      "path": "manifest.json",
+      "status": "preserved_other_contributor",
+      "reason": "Structured JSON preserved unchanged; existing author field names P2PCLAW Foundation and carries MIT metadata."
+    },
+    {
+      "path": "references/p2pclaw-api.md",
+      "status": "attributed",
+      "reason": "Visible documentation attribution added; original API reference body preserved."
+    }
+  ],
+  "baseline_manifest": "provenance-baseline.json"
+}

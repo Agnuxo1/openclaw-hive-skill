@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "repository": "Agnuxo1/openclaw-hive-skill",
+  "canonical_url": "https://github.com/Agnuxo1/openclaw-hive-skill",
+  "baseline_commit": "90768a4b962ed8873c144ae84cfdac43a9e91cc7",
+  "recorded_on": "2026-11-04",
+  "hash_algorithm": "SHA-256",
+  "source_bytes": "Git blob bytes at baseline commit (not worktree-converted bytes)",
+  "scope": "All five original paths in the baseline repository; includes exact hashes and sizes for both attributed and preserved files.",
+  "files": [
+    {
+      "path": "README.md",
+      "status": "attributed",
+      "git_blob": "01193871c8e0d6bd0fa8b02160a0166219685861",
+      "sha256": "e3f4b60dfa83e2566895ff52e0c2949b51f331f74c8839a1d00d53ca96ab0234",
+      "size_bytes": 2677,
+      "first_add_commit": "c75f79b80eb85573589f80c967d011063dcd7b2f",
+      "first_add_author": "Francisco Angulo de Lafuente",
+      "first_add_author_account_login": "Agnuxo1",
+      "first_add_author_date": "2026-02-15T21:49:23+01:00"
+    },
+    {
+      "path": "SKILL.md",
+      "status": "preserved_unresolved",
+      "git_blob": "cfcbf7b9f945f68321e83a2930ddac58f9a4029e",
+      "sha256": "9f521afaef485a96886bdb66b6a37d5532a4e2e9c7f10bb6ad2ef745883c67ef",
+      "size_bytes": 3352,
+      "first_add_commit": "7fe597d198bd384dbcbe117cf9fee9af381e99cd",
+      "first_add_author": "Francisco Angulo de Lafuente",
+      "first_add_author_account_login": "Agnuxo1",
+      "first_add_author_date": "2026-02-18T14:15:52+01:00"
+    },
+    {
+      "path": "hive_connector.py",
+      "status": "attributed",
+      "git_blob": "3b23f066cde34c60e7f79bb53d73b8a8f1e4d349",
+      "sha256": "ffa339cb396c1d93b4c52f2de41b3d627974e09bbcb07f1fd1d4c2d749963257",
+      "size_bytes": 13314,
+      "first_add_commit": "c75f79b80eb85573589f80c967d011063dcd7b2f",
+      "first_add_author": "Francisco Angulo de Lafuente",
+      "first_add_author_account_login": "Agnuxo1",
+      "first_add_author_date": "2026-02-15T21:49:23+01:00"
+    },
+    {
+      "path": "manifest.json",
+      "status": "preserved_other_contributor",
+      "git_blob": "694df864d77df2c8b428759efbcd26efe98e9778",
+      "sha256": "ab32edc4fca0053d3fba2ba4d16f1bbe07e975e51e6955aa311994ef21e7e38d",
+      "size_bytes": 660,
+      "first_add_commit": "c75f79b80eb85573589f80c967d011063dcd7b2f",
+      "first_add_author": "Francisco Angulo de Lafuente",
+      "first_add_author_account_login": "Agnuxo1",
+      "first_add_author_date": "2026-02-15T21:49:23+01:00"
+    },
+    {
+      "path": "references/p2pclaw-api.md",
+      "status": "attributed",
+      "git_blob": "0131b9e1674122700383e8b1978e49a517f53003",
+      "sha256": "d196e93d648278a6de594027d9b55d7b999490a77466d4d18ff111f45b2a9140",
+      "size_bytes": 6607,
+      "first_add_commit": "7fe597d198bd384dbcbe117cf9fee9af381e99cd",
+      "first_add_author": "Francisco Angulo de Lafuente",
+      "first_add_author_account_login": "Agnuxo1",
+      "first_add_author_date": "2026-02-18T14:15:52+01:00"
+    }
+  ],
+  "distinctive_original_passages": [
+    {
+      "path": "README.md",
+      "line_start": 9,
+      "line_end": 13,
+      "text": "## What is this?\n**P2PCLAW** is a decentralized, multi-agent research network. Agents join a shared Hive Mind,\nreceive research tasks, collaborate on investigations, and publish findings permanently to IPFS —\nwith no central server or coordinator.",
+      "excerpt_sha256": "8ffc828f24f1be2127040ff9114acabee4b04707fe48d53ce38fd8f3e7d482de"
+    },
+    {
+      "path": "hive_connector.py",
+      "line_start": 116,
+      "line_end": 121,
+      "text": "class HiveConnector(Skill):\n    def __init__(self, gateway_url=\"http://localhost:3000\"):\n        super().__init__()\n        self.gateway_url = gateway_url\n        self.agent_id = None\n        self.agent_name = None",
+      "excerpt_sha256": "b37426d86971ea0f41692f1b834f23ddc2ad08f94d2ee17ef2568b21949853d8"
+    },
+    {
+      "path": "references/p2pclaw-api.md",
+      "line_start": 3,
+      "line_end": 9,
+      "text": "**Base URL**: `https://p2pclaw-mcp-server-production.up.railway.app`\n**Protocol**: REST / HTTP JSON\n**Auth**: None required (public endpoints)\n## Status & Discovery",
+      "excerpt_sha256": "40044ddb1b3a6a11f3365e4aa6273a7a981862d61c027139aab5843e6f5f3bcf"
+    }
+  ],
+  "excerpt_method": "Short opening paragraph from Markdown files and a class-level code excerpt from the Python connector; checked for email, phone-pattern and high-confidence credential patterns."
+}

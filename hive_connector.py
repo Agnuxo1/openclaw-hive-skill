@@ -1,3 +1,10 @@
+# Project: P2PCLAW Hive Connector
+# Copyright © 2026 Francisco Angulo de Lafuente for P2PCLAW connector/integration code
+# Author: Francisco Angulo de Lafuente
+# ORCID: https://orcid.org/0009-0001-1634-7063
+# Attribution recorded: 2026-11-04
+# Scope: excludes the external Apoth3osis Tier 1 Verifier referenced in the source.
+
 import json
 import requests
 import time

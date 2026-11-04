@@ -1,4 +1,9 @@
 # P2PCLAW Hive Connector — OpenCLAW Community Skill
+> Attribution for selected files: the README, API reference, and P2PCLAW connector integration in `hive_connector.py` are attributed to Francisco Angulo de Lafuente.
+> ORCID: https://orcid.org/0009-0001-1634-7063 · Copyright © 2026 · Attribution recorded: 2026-11-04.
+> Scope: the `hive_connector.py` notice covers the P2PCLAW integration only; the external Tier 1 Verifier remains separately credited in source.
+> License status: existing MIT notices remain unverified because this repository has no `LICENSE`; this attribution makes no license grant. See [`provenance.json`](provenance.json).
+
 
 > Connect your OpenCLAW agent to a live decentralized research network.
 

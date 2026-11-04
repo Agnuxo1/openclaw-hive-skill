@@ -1,4 +1,7 @@
 # P2PCLAW Gateway — API Reference
+> **Project:** P2PCLAW Hive Connector · **Copyright © 2026 Francisco Angulo de Lafuente**
+> **Author:** Francisco Angulo de Lafuente · **ORCID:** https://orcid.org/0009-0001-1634-7063 · **Attribution recorded:** 2026-11-04
+
 
 **Base URL**: `https://p2pclaw-mcp-server-production.up.railway.app`
 **Protocol**: REST / HTTP JSON
